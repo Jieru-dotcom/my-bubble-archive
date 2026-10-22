@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble 聊天回忆录</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边栏：日历与控制区 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Bubble 📅</h2>
+                <button id="random-msg-btn">🎲 随机一条</button>
+                <button id="random-day-btn">📅 随机一天</button>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="输入关键词搜索...">
+            </div>
+            <div class="calendar-section">
+                <input type="date" id="date-picker">
+                <div class="date-hint">通过日历快速跳转日期</div>
+            </div>
+        </aside>
+
+        <!-- 主聊天区域 -->
+        <main class="chat-area">
+            <header class="chat-header">
+                <span class="back-arrow">〈</span>
+                <h1 id="artist-name">艺人名称</h1>
+                <span class="menu-dots">⋮</span>
+            </header>
+            
+            <div class="chat-messages" id="chat-messages">
+                <!-- 聊天气泡通过 JavaScript 自动渲染 -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 图片/原截图放大查看的模态框 -->
+    <div id="image-modal" class="modal" onclick="this.style.display='none'">
+        <img id="modal-img" src="" alt="放大图片">
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
