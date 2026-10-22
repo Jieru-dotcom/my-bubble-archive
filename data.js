@@ -1,6 +1,6 @@
 // 基础信息配置
 const bubbleConfig = {
-    artistName: "边伯贤" // 在这里写你爱豆的名字
+    artistName: "백현이" // 在这里写你爱豆的名字
 };
 
 // 聊天数据库：后续月份内容直接往下追加即可！
