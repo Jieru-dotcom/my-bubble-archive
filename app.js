@@ -1,9 +1,10 @@
 // 初始化网页逻辑
 document.addEventListener("DOMContentLoaded", () => {
+    // 渲染页面顶部的聊天对象名字
     document.getElementById('artist-name').innerText = bubbleConfig.artistName;
     renderMessages(bubbleRawData);
 
-    // 搜索过滤
+    // 搜索过滤功能
     document.getElementById('search-input').addEventListener('input', (e) => {
         const keyword = e.target.value.trim().toLowerCase();
         const filtered = bubbleRawData.filter(item => 
@@ -13,21 +14,21 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMessages(filtered);
     });
 
-    // 日期跳转
+    // 日期跳转功能
     document.getElementById('date-picker').addEventListener('change', (e) => {
-        const selectedDate = e.target.value; // YYYY-MM-DD
+        const selectedDate = e.target.value;
         const filtered = bubbleRawData.filter(item => item.date === selectedDate);
         renderMessages(filtered);
     });
 
-    // 随机一条消息
+    // 随机抽取一条消息
     document.getElementById('random-msg-btn').addEventListener('click', () => {
         if(!bubbleRawData.length) return;
         const randomItem = bubbleRawData[Math.floor(Math.random() * bubbleRawData.length)];
         renderMessages([randomItem]);
     });
 
-    // 随机一天聊天
+    // 随机回顾完整的一天
     document.getElementById('random-day-btn').addEventListener('click', () => {
         const dates = [...new Set(bubbleRawData.map(item => item.date))];
         if(!dates.length) return;
@@ -42,21 +43,33 @@ function renderMessages(dataList) {
     const container = document.getElementById('chat-messages');
     container.innerHTML = '';
     let lastDate = '';
+    let lastSender = ''; // 用于记录上一条消息是谁发的
 
     dataList.forEach((msg, index) => {
-        // 自动插入日期分割线
+        // 1. 自动插入日期分割线
         if (msg.date !== lastDate) {
             const divider = document.createElement('div');
             divider.className = 'date-divider';
             divider.innerText = msg.date;
             container.appendChild(divider);
             lastDate = msg.date;
+            lastSender = ''; // 换天了，重新计算连续发送
         }
 
+        // 2. 如果是艺人发的，且上一条不是他发的，需要显示名字
+        if (msg.sender === 'artist' && msg.sender !== lastSender) {
+            const nameEl = document.createElement('div');
+            nameEl.className = 'artist-name-label';
+            nameEl.innerText = bubbleConfig.artistName;
+            container.appendChild(nameEl);
+        }
+        lastSender = msg.sender; // 更新发送者记录
+
+        // 3. 构造消息行布局
         const row = document.createElement('div');
         row.className = `message-row ${msg.sender}`;
 
-        // 拼接时间与原图去重查看结构
+        // 4. 附属信息（时间、查看原图）
         const metaHtml = `
             <div class="meta-info">
                 ${msg.time}
@@ -64,7 +77,7 @@ function renderMessages(dataList) {
             </div>
         `;
 
-        // 根据媒体类型生成内部 HTML
+        // 5. 根据媒体类型生成内部内容
         let contentHtml = '';
         if (msg.type === 'text') {
             contentHtml = `<div>${msg.textKo}</div>`;
@@ -86,6 +99,7 @@ function renderMessages(dataList) {
         bubble.className = 'bubble';
         bubble.innerHTML = contentHtml;
 
+        // 6. 区分左右对齐拼接
         if (msg.sender === 'artist') {
             row.appendChild(bubble);
             row.insertAdjacentHTML('beforeend', metaHtml);
