@@ -97,3 +97,12 @@ body, html {
     background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
 }
 .modal img { max-width: 90%; max-height: 90%; border-radius: 4px; }
+
+.artist-name-label {
+    font-size: 12px;
+    color: #4a4a4a;
+    margin-left: 20px;
+    margin-bottom: 2px;
+    margin-top: 8px;
+    font-weight: bold;
+}
